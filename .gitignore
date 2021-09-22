@@ -1,0 +1,4 @@
+node_modules/
+reader/
+
+config.env
