@@ -17,6 +17,12 @@ if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'))
 }
 
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(`${__dirname}/build`));
+
+    app.get(/.*/, (req, res) => res.sendFile(`build/index.html`, { root: __dirname }));
+}
+
 const port = process.env.PORT || 8000;
 
 app.listen(port, () => {

@@ -3,6 +3,29 @@ const router = express.Router();
 const { google } = require("googleapis");
 const { GoogleAuth } = require('google-auth-library');
 
+var ReadSpreadsheetId = "13e6z_qdmzqgwdU7KjMD92a5q1aGMo7ikzXbriJG5X74";
+var WritespreadsheetId = "1jFkp-VJTtBfM3A-22dR1paQWSAnAlUjjSeipQe4sM3Y";
+
+//2nd 1OCSMR1fYHwSGN9q1piLAzu5I7zxGSBkPOCxzeMYMO7o
+
+
+//ORIGINAL
+//"13e6z_qdmzqgwdU7KjMD92a5q1aGMo7ikzXbriJG5X74"
+
+router.post('/read-spreadsheet/:id', async (req, res) => {
+    const { id } = req.params; 
+    ReadSpreadsheetId = id;
+
+    res.send("Changed!")
+})
+
+router.post('/write-spreadsheet/:id', async (req, res) => {
+    const { id } = req.params; 
+    WritespreadsheetId = id;
+
+    res.send("Changed!")
+})
+
 router.get('/ids', async (req, res) => {
 
     const auth = new GoogleAuth({
@@ -18,7 +41,7 @@ router.get('/ids', async (req, res) => {
     
     //https://docs.google.com/spreadsheets/d/13e6z_qdmzqgwdU7KjMD92a5q1aGMo7ikzXbriJG5X74/edit?usp=sharing
     
-    const spreadsheetId = "13e6z_qdmzqgwdU7KjMD92a5q1aGMo7ikzXbriJG5X74";
+    const spreadsheetId = ReadSpreadsheetId;
 
     const sheetInfo = await googleSheetsInstance.spreadsheets.get({
         auth,
@@ -35,7 +58,7 @@ router.get('/ids', async (req, res) => {
     return res.json(readData.data)
 })
 
-router.get('/userinfo/:pos', async (req, res) => {
+router.post('/userinfo/:pos', async (req, res) => {
 
     const { pos } = req.params; 
     const auth = new GoogleAuth({
@@ -51,7 +74,7 @@ router.get('/userinfo/:pos', async (req, res) => {
     
     //https://docs.google.com/spreadsheets/d/13e6z_qdmzqgwdU7KjMD92a5q1aGMo7ikzXbriJG5X74/edit?usp=sharing
     
-    const spreadsheetId = "13e6z_qdmzqgwdU7KjMD92a5q1aGMo7ikzXbriJG5X74";
+    const spreadsheetId = ReadSpreadsheetId;
 
     const sheetInfo = await googleSheetsInstance.spreadsheets.get({
         auth,
@@ -85,7 +108,7 @@ router.post('/sendLog/:name/:num/:role/:valid/:date/:log', async (req, res) => {
     //https://docs.google.com/spreadsheets/d/13e6z_qdmzqgwdU7KjMD92a5q1aGMo7ikzXbriJG5X74/edit?usp=sharing
     //https://docs.google.com/spreadsheets/d/1jFkp-VJTtBfM3A-22dR1paQWSAnAlUjjSeipQe4sM3Y/edit?usp=sharing
     
-    const spreadsheetId = "1jFkp-VJTtBfM3A-22dR1paQWSAnAlUjjSeipQe4sM3Y";
+    const spreadsheetId = WritespreadsheetId;
 
     const sheetInfo = await googleSheetsInstance.spreadsheets.get({
         auth,
