@@ -15,38 +15,22 @@ export default class Member extends Component {
     }
 
     async componentDidMount() {
-        try{
-            if(this.state.userPos !== 0 && this.state.userPos >= 1){
-                const res = await axios.get(`http://192.168.2.10:5000/api/v1/userinfo/${this.state.userPos}`)
-                this.setState({
-                    name: res.data.values[0][1],
-                    id: res.data.values[0][2],
-                    role: res.data.values[0][4],
-                    valid: res.data.values[0][5]              
-                })
-                const response = await axios.post(`http://192.168.2.10:5000/api/v1/sendLog/${this.state.name}/${this.state.id}/${this.state.role}/${this.state.valid}/IN/${new Date()}`)
-
-                if(response.data !== "Log Ingested") {
-                    throw "Error"
-                }
-            }
-        } catch (err){
-            return({
-                
+        if(this.state.userPos !== 0 && this.state.userPos >= 1){
+            const res = await axios.post(`/api/v1/userinfo/${this.state.userPos}`)
+            this.setState({
+                name: res.data.values[0][1],
+                id: res.data.values[0][2],
+                role: res.data.values[0][4],
+                valid: res.data.values[0][5]              
             })
-        }
-
-        
+            await axios.post(`/api/v1/sendLog/${this.state.name}/${this.state.id}/${this.state.role}/${this.state.valid}/IN/${new Date()}`)
+        }       
     }
 
     handleClick = async () => {
         this.setState({signOut: false})
 
-        const response = await axios.post(`http://192.168.2.10:5000/api/v1/sendLog/${this.state.name}/${this.state.id}/${this.state.role}/${this.state.valid}/OUT/${new Date()}`)
-
-        if(response.data !== "Log Ingested") {
-            throw "Error"
-        }
+        await axios.post(`/api/v1/sendLog/${this.state.name}/${this.state.id}/${this.state.role}/${this.state.valid}/OUT/${new Date()}`)        
     }
 
     render() {
