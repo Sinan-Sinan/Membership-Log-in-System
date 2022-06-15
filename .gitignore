@@ -1,0 +1,5 @@
+node_modules/
+reader/
+
+config.env
+keys.json
